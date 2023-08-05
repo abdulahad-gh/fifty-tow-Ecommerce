@@ -6,6 +6,7 @@ require('dotenv').config()
 
 const rateLimit = require('express-rate-limit')
 const userRoute = require('./routers/user.route')
+const seedRoute = require('./routers/seed.route')
 const root = '/api/v1/'
 
 
@@ -22,6 +23,7 @@ app.use(express.json())
 app.use(limiter)
 app.use(morgan('dev'))
 app.use(`${root}user`,userRoute)
+app.use(`${root}seed`,seedRoute)
 
 
 
