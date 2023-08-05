@@ -1,9 +1,9 @@
 const seedService  = require('../services/seed.service')
 
 //seed cntroller for deleteMany and insertMany
-const userSeed  = async(req,res,next)=>{
+const userSeedController  = async(req,res,next)=>{
     try {
-    const users  = await seedService.userSeed()
+    const users  = await seedService()
     res.status(200).json({
         status:true,
         message:'delete all users, and insert many users',
@@ -14,3 +14,5 @@ const userSeed  = async(req,res,next)=>{
         next(error)
     }
 }
+
+module.exports = userSeedController;

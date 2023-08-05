@@ -10,3 +10,5 @@ const  userSeed = async()=>{
     const result = await User.insertMany(data.users)
     return result
 }
+
+module.exports = userSeed;

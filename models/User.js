@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
-
+const bcrypt = require('bcrypt')
 const userSchema = mongoose.Schema(
   {
     name: {
       type:String,
-      unique:[true,'name must be unique']
+      required:[true,'please enter your name']
     } ,
     email: {
       type: String,
@@ -22,13 +22,14 @@ const userSchema = mongoose.Schema(
         validator: (value) => validator.isStrongPassword(value),
         message: "password should be strong",
       },
+      set:(v)=> bcrypt.hashSync(v,bcrypt.genSaltSync(10))
     },
     confirmPassword: {
       type: String,
-      required: [true, "please provide a password"],
+      required: [true, "please renter a password"],
       validate: {
         validator: function (value) {
-          return this.password === value;
+          return bcrypt.compareSync(value,this.password)
         },
         message: "confirm password don't match!",
       },
@@ -60,6 +61,10 @@ const userSchema = mongoose.Schema(
   }
 );
 
-const User = mongoose.model("User", userSchema);
+userSchema.pre("save",function(next){
+  this.confirmPassword=undefined
+  next()
+})
 
+const User = mongoose.model("User", userSchema);
 module.exports = User;

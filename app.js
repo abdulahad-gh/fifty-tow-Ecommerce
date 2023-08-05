@@ -7,7 +7,7 @@ require('dotenv').config()
 const rateLimit = require('express-rate-limit')
 const userRoute = require('./routers/user.route')
 const seedRoute = require('./routers/seed.route')
-const root = '/api/v1/'
+const { errorResponse } = require('./controllers/response.controller')
 
 
 
@@ -22,8 +22,9 @@ const limiter = rateLimit({
 app.use(express.json())
 app.use(limiter)
 app.use(morgan('dev'))
-app.use(`${root}user`,userRoute)
-app.use(`${root}seed`,seedRoute)
+
+app.use('/api/v1/user',userRoute)
+app.use('/api/v1/seed',seedRoute)
 
 
 
@@ -38,10 +39,7 @@ app.use((req,res,next)=>{
 
 //server side error handling
 app.use((err,req,res,next)=>{
-    return res.status(err.status||500).json({
-        status:false,
-        message:err.message
-    })
+    return errorResponse(res,{statusCode:err.status,message:err.message})
 })
 
 

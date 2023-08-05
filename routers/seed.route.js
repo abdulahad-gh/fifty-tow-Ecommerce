@@ -1,8 +1,8 @@
 const express = require('express')
-const seedRoute = express.Router()
+const router = express.Router()
 const seedController =  require('../controllers/seed.controller')
 
 
-seedRoute.get('/users',seedController.userSeed)
+router.get('/users',seedController)
 
-module.exports = seedRoute;
+module.exports = router;
